@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spa33y luau/roblox scripting guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{--bg:#171a2e;--panel:#21254280;--card:#1f2340;--ink:#e9eaf6;--mute:#9a9dbd;--line:#363b64;--acc:#ffd23f;--acc2:#5ce1e6;--code:#10122200;--codebg:#0f1121;--k:#ff7eb6;--s:#9be28a;--c:#6f7499;--n:#ffb86b;
+--sans:"Bricolage Grotesque",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f6f5fb;--card:#fff;--ink:#1c1e36;--mute:#585b7e;--line:#d9d9ea;--acc:#b8860b;--acc2:#0b7f86;--codebg:#1c1f38;--k:#ff7eb6;--s:#9be28a}}
+*{box-sizing:border-box}
+html{scroll-padding-top:90px;color-scheme:dark light}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--sans)}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:14px 20px;padding-top:calc(14px + env(safe-area-inset-top,0px));display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+h1{margin:0;font:800 26px/1 var(--sans);letter-spacing:-.02em}
+h1 span{color:var(--acc)}
+.sw{flex:1;min-width:220px;position:relative;max-width:560px}
+input{width:100%;padding:11px 14px 11px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:400 16px var(--sans)}
+input:focus,button:focus-visible,a:focus-visible{outline:2px solid var(--acc2);outline-offset:2px}
+.hint{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--mute);font:600 12px var(--mono);border:1px solid var(--line);border-radius:5px;padding:1px 6px;pointer-events:none}
+#count{color:var(--mute);font-size:14px}
+.wrap{display:grid;grid-template-columns:250px minmax(0,1fr);max-width:1100px;margin:0 auto}
+nav{position:sticky;top:78px;align-self:start;max-height:calc(100vh - 90px);overflow:auto;padding:22px 14px 30px 20px;font-size:15px}
+nav h3{margin:18px 0 4px;font:600 15px var(--sans);color:var(--acc2)}
+nav h3:first-child{margin-top:0}
+nav a{display:block;padding:3px 0 3px 10px;color:var(--mute);text-decoration:none;border-left:2px solid var(--line)}
+nav a:hover{color:var(--ink);border-color:var(--acc)}
+main{padding:22px 20px 80px;min-width:0}
+.hero{border-left:5px solid var(--acc);padding:4px 0 4px 18px;margin-bottom:34px}
+.hero h2{font:800 clamp(30px,5vw,48px)/1.05 var(--sans);margin:0 0 10px;letter-spacing:-.025em}
+.hero p{margin:0;color:var(--mute);max-width:60ch}
+section{margin:0 0 44px;max-width:76ch}
+section h2{font:800 28px/1.15 var(--sans);margin:0 0 4px;letter-spacing:-.015em}
+.cat{color:var(--acc2);font-size:14px;font-weight:600;margin-bottom:10px}
+p{margin:0 0 14px}
+code{font:400 .88em var(--mono);background:var(--card);border:1px solid var(--line);padding:1px 6px;border-radius:5px}
+.cb{position:relative;margin:0 0 16px}
+pre{margin:0;background:var(--codebg);color:#e6e7f5;border-radius:10px;padding:16px 16px;overflow-x:auto;font:400 14px/1.55 var(--mono);border:1px solid var(--line)}
+pre code{background:none;border:0;padding:0;font-size:inherit;color:inherit}
+.k{color:var(--k)}.s{color:var(--s)}.c{color:var(--c);font-style:italic}.n{color:var(--n)}
+.cp{position:absolute;top:8px;right:8px;background:#ffffff14;color:#cfd1ea;border:1px solid #ffffff22;border-radius:6px;padding:3px 9px;font:600 12px var(--sans);cursor:pointer}
+.cp:hover{background:#ffffff26}
+.exh{font-weight:600;color:var(--acc2);margin:0 0 6px;font-size:15px}ol.ex{margin:0 0 20px;padding-left:24px}ol.ex li{margin:0 0 8px}
+.tabs{display:flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}.tabs button{font:600 14px var(--sans);background:var(--card);color:var(--mute);border:0;padding:9px 14px;cursor:pointer}.tabs button.on{background:var(--acc);color:#171a2e}
+.tip{border:1.5px dashed var(--acc);border-radius:10px;padding:10px 14px;margin:0 0 16px;background:var(--card)}
+#empty{display:none;padding:30px 0;color:var(--mute)}
+#empty strong{color:var(--ink)}
+@media (max-width:760px){.wrap{display:block}nav{display:none}.hint{display:none}body{font-size:16px}}
+@media (prefers-reduced-motion:no-preference){.hero{animation:in .5s ease-out}@keyframes in{from{opacity:0;transform:translateX(-10px)}}}
+</style>
+</head>
+<body>
+<header>
+<h1><span>Spa33y</span> luau/roblox scripting guide</h1>
+<div class="sw"><input id="q" type="search" placeholder="Search anything: save, shoot, button, cooldown…" autocomplete="off" aria-label="Search the guide"><span class="hint">/</span></div>
+<div class="tabs" role="tablist"><button id="tb" type="button" role="tab">Beginner path</button><button id="ta" type="button" role="tab">Full guide</button></div><span id="count"></span>
+</header>
+<div class="wrap">
+<nav id="nav" aria-label="Sections"></nav>
+<main>
+<div class="hero"><h2>Spa33y’s luau/roblox scripting guide.</h2><p>New to scripting? Start at <b>Lesson 0</b>. Every lesson is tiny, shows what you’ll see, and ends with something to try. Already know the basics? Open the <b>Full guide</b> tab for everything else.</p></div>
+<div id="secs"></div>
+<div id="empty"><strong>No matches.</strong> Try a shorter word like “event”, “table” or “tween”.</div>
+</main>
+</div>
+<script>
+// [id, category, title, tags, blocks]; blocks: p = paragraph (html), c = code, t = tip
+var S=[
+["readme","Start here","How to read the code examples","start here read examples beginner help comments guide legend new setup explain",[
+["p","Every example is a small piece you can paste into a Script in Studio. Open <code>View → Explorer</code> and <code>View → Output</code>, right-click <code>ServerScriptService → Insert Object → Script</code>, paste the code and press Play."],
+["p","In the code, <code>--</code> starts a <b>comment</b>: a note for you that Luau ignores. A comment like <code>--&gt; 5</code> shows what <code>print</code> will put in the Output. A line with <code>...</code> means “your own code goes here”."],
+["p","Names like <code>workspace.Door</code> must match things that exist in <b>your</b> Explorer. If you see <i>attempt to index nil</i>, a name doesn’t match. Under the harder examples there is a <b>Step by step</b> list that explains the code one idea at a time."],
+["t","Where does it go? <b>Script</b> goes in ServerScriptService (or inside a part). <b>LocalScript</b> goes in StarterPlayerScripts or inside a GUI. If an example doesn’t say, use a normal Script."]]],
+["start","Basics","Hello, Luau","print output console first script",[
+["p","Luau is Roblox’s version of Lua, with added speed, types and nice syntax. Scripts go in Studio’s Explorer. Open <code>View → Output</code> to see what <code>print</code> shows."],
+["c",`print("Hello, world!")
+warn("Yellow text, for problems")
+-- this is a comment
+--[[ this is a
+multi-line comment ]]`]]],
+["vars","Basics","Variables and types","local variable number string boolean nil type typeof",[
+["p","Always use <code>local</code>. Without it the variable becomes global, which is slower and causes bugs. Types are <code>number</code>, <code>string</code>, <code>boolean</code>, <code>nil</code>, <code>table</code>, <code>function</code>, plus Roblox types like <code>Vector3</code> and <code>Color3</code>."],
+["c",`local health = 100
+local name = "Noob"
+local alive = true
+local nothing = nil
+
+print(typeof(health))   --> number
+health += 25            -- compound assignment
+local msg = \`{name} has {health} HP\`  -- string interpolation`],
+["e",["<code>local health = 100</code> makes a variable called health and stores the number 100 in it.", "Text goes in quotes, booleans are <code>true</code> or <code>false</code>, and <code>nil</code> means “nothing”.", "<code>health += 25</code> is a shortcut for <code>health = health + 25</code>.", "<code>typeof(health)</code> tells you what kind of value it is.", "A string with backticks lets you put variables inside {curly braces} and they turn into their values."]]]],
+["strings","Basics","Strings","string format concat sub upper lower split find gsub",[
+["c",`local s = "Hello"
+print(s .. " World")        -- join with ..
+print(#s)                   -- length: 5
+print(s:upper(), s:lower())
+print(s:sub(1, 3))          --> Hel
+print(("a,b,c"):split(",")) --> {"a","b","c"}
+print(s:find("ll"))         --> 3 4
+print(string.format("%.2f", 3.14159)) --> 3.14`]]],
+["logic","Control flow","If statements","if else elseif and or not comparison equal operator",[
+["p","Not equal is <code>~=</code> (not <code>!=</code>). <code>and</code> / <code>or</code> / <code>not</code> replace <code>&amp;&amp;</code> / <code>||</code> / <code>!</code>. Only <code>false</code> and <code>nil</code> are falsy. Zero and empty strings count as true."],
+["c",`local hp = 40
+if hp <= 0 then
+	print("Dead")
+elseif hp < 50 then
+	print("Low health")
+else
+	print("Fine")
+end
+
+local label = if hp > 50 then "healthy" else "hurt" -- inline if`]]],
+["loops","Control flow","Loops","for while repeat do break continue ipairs pairs loop",[
+["c",`for i = 1, 5 do print(i) end         -- 1 to 5
+for i = 10, 0, -2 do print(i) end    -- step of -2
+
+local n = 0
+while n < 3 do n += 1 end
+
+repeat n -= 1 until n == 0
+
+for _, v in ipairs({"a","b","c"}) do -- arrays, in order
+	if v == "b" then continue end    -- skip this one
+	print(v)
+end
+for key, value in pairs({x = 1, y = 2}) do print(key, value) end -- dictionaries`],
+["t","Careful: <code>while true do</code> without a <code>task.wait()</code> inside will freeze the game."],
+["e",["<code>for i = 1, 5 do</code> runs the code 5 times. i is 1, then 2, up to 5.", "<code>while</code> repeats as long as its condition is true. <code>repeat ... until</code> always runs at least once.", "<code>ipairs</code> gives you each list item in order. The <code>_</code> means “I don’t need the position”.", "<code>continue</code> skips the rest of this round and moves to the next item.", "<code>pairs</code> does the same for dictionaries, giving you the name and the value."]]]],
+["tables","Data","Tables","table array dictionary insert remove find sort list index length",[
+["p","Tables are Luau’s only collection type. They work as arrays, dictionaries, or both. <b>Arrays start at index 1</b>, not 0."],
+["c",`local fruits = {"apple", "banana"}
+table.insert(fruits, "cherry")     -- add to end
+table.remove(fruits, 1)            -- remove first
+print(#fruits, fruits[1])          --> 2 banana
+print(table.find(fruits, "cherry"))
+
+local stats = {hp = 100, speed = 16}
+stats.hp -= 10
+stats["mana"] = 50
+
+table.sort(fruits, function(a, b) return a < b end)`],
+["e",["<code>{\"apple\", \"banana\"}</code> is a list. The first item is at position 1, not 0.", "<code>table.insert</code> adds to the end. <code>table.remove(fruits, 1)</code> removes the first item.", "<code>#fruits</code> counts the items.", "<code>{hp = 100, speed = 16}</code> is a dictionary: names pointing at values. Read with <code>stats.hp</code> or <code>stats[\"hp\"]</code>.", "The function you give <code>table.sort</code> returns true when a should come before b."]]]],
+["funcs","Data","Functions","function return parameter argument callback closure variadic",[
+["c",`local function add(a, b)
+	return a + b
+end
+print(add(2, 3)) --> 5
+
+-- multiple returns
+local function minmax(t) return math.min(unpack(t)), math.max(unpack(t)) end
+
+-- functions are values
+local greet = function(name) print("Hi " .. name) end
+task.delay(1, greet, "Roblox")`],
+["e",["<code>local function add(a, b)</code> makes a function called add. a and b are its inputs.", "<code>return a + b</code> sends the answer back to whoever called it.", "<code>add(2, 3)</code> runs the function with a = 2 and b = 3, so you get 5.", "Functions are values, so you can store one in a variable like <code>greet</code> and hand it to other code.", "<code>task.delay(1, greet, \"Roblox\")</code> waits 1 second, then runs greet with “Roblox” as the name."]]]],
+["types","Data","Type annotations","type strict annotation optional generic luau typecheck",[
+["p","Luau’s big upgrade over Lua. Put <code>--!strict</code> at the top of a script and the editor warns you about type mistakes before you play."],
+["c",`--!strict
+type Pet = { name: string, level: number, nickname: string? }
+
+local function levelUp(p: Pet): Pet
+	p.level += 1
+	return p
+end
+
+local dog: Pet = { name = "Rex", level = 1 }
+levelUp(dog)`]]],
+["services","Roblox API","Services and Instances","GetService Workspace Instance new FindFirstChild WaitForChild Parent Clone Destroy part",[
+["p","Everything in the Explorer is an <code>Instance</code> with properties, children and a <code>Parent</code>. Get services with <code>game:GetService</code>, never <code>game.Players</code>."],
+["c",`local Players = game:GetService("Players")
+local RS = game:GetService("ReplicatedStorage")
+
+local part = Instance.new("Part")
+part.Size = Vector3.new(4, 1, 4)
+part.Position = Vector3.new(0, 10, 0)
+part.BrickColor = BrickColor.new("Bright red")
+part.Anchored = true
+part.Parent = workspace  -- set Parent LAST
+
+local door = workspace:FindFirstChild("Door")   -- nil if missing
+local gui  = script.Parent:WaitForChild("Frame") -- waits until it exists
+local copy = part:Clone()
+part:Destroy()`],
+["e",["<code>game:GetService</code> fetches built-in systems like Players or ReplicatedStorage.", "<code>Instance.new(\"Part\")</code> creates a part in memory. You can’t see it yet.", "Set its properties: Size, Position, Color, Anchored.", "<code>part.Parent = workspace</code> puts it in the world. Do this last so it appears finished.", "<code>FindFirstChild</code> gives you nil if the thing is missing. <code>WaitForChild</code> waits until it exists.", "<code>Clone()</code> makes a copy and <code>Destroy()</code> removes something for good."]]]],
+["events","Roblox API","Events and connections","Connect Touched ClickDetector Heartbeat Once Wait event listener signal Disconnect",[
+["p","Events fire when something happens. <code>:Connect</code> runs your function each time. Use <code>:Once</code> for a single run, and keep the connection if you need to <code>:Disconnect()</code> it later."],
+["c",`local part = workspace.Lava
+local RunService = game:GetService("RunService")
+
+part.Touched:Connect(function(hit)
+	local hum = hit.Parent:FindFirstChildOfClass("Humanoid")
+	if hum then hum.Health = 0 end
+end)
+
+workspace.Button.ClickDetector.MouseClick:Connect(function(player)
+	print(player.Name .. " clicked")
+end)
+
+RunService.Heartbeat:Connect(function(dt) -- every frame
+	part.CFrame *= CFrame.Angles(0, dt, 0)
+end)`],
+["e",["<code>part.Touched</code> is an event. It “fires” whenever something touches the part.", "<code>:Connect(function(hit) ... end)</code> means “when it fires, run this”. hit is the part that touched.", "<code>hit.Parent</code> is usually the character model. Looking for a Humanoid inside tells you if it’s a player or NPC.", "<code>hum.Health = 0</code> kills it.", "<code>MouseClick</code> hands your function the player who clicked.", "<code>Heartbeat</code> fires every frame. dt is the time since the last frame, so the spin speed stays smooth on any computer."]]]],
+["task","Roblox API","The task library","task wait spawn delay defer cancel thread cooldown timer",[
+["p","Use <code>task.*</code>, not the old <code>wait()</code> / <code>spawn()</code>."],
+["c",`task.wait(2)                       -- pause this script 2s
+task.spawn(function() ... end)      -- run now, in parallel
+task.delay(5, function() ... end)   -- run after 5s
+local t = task.delay(10, print, "late")
+task.cancel(t)                      -- stop it`]]],
+["players","Roblox API","Players and leaderstats","Players PlayerAdded leaderstats character Humanoid IntValue leaderboard join leave",[
+["c",`local Players = game:GetService("Players")
+
+Players.PlayerAdded:Connect(function(player)
+	local ls = Instance.new("Folder")
+	ls.Name = "leaderstats"   -- exact name shows the leaderboard
+	ls.Parent = player
+
+	local coins = Instance.new("IntValue")
+	coins.Name = "Coins"
+	coins.Value = 0
+	coins.Parent = ls
+
+	player.CharacterAdded:Connect(function(char)
+		char:WaitForChild("Humanoid").WalkSpeed = 20
+	end)
+end)`],
+["e",["<code>PlayerAdded</code> fires when someone joins. player is that person.", "A Folder named exactly <code>leaderstats</code> makes the leaderboard appear.", "Each IntValue inside becomes a column. Its Name is the column title.", "<code>CharacterAdded</code> fires every time their character spawns, including after dying.", "<code>WaitForChild(\"Humanoid\")</code> waits for it to exist, then speed is set to 20 (the default is 16)."]]]],
+["split","Structure","Server, client and modules","Script LocalScript ModuleScript ServerStorage ReplicatedStorage ServerScriptService StarterGui StarterPlayerScripts require client server",[
+["p","<b>Script</b> runs on the server. <b>LocalScript</b> runs on one player’s device and can touch their UI and camera. <b>ModuleScript</b> holds reusable code and runs when <code>require</code>d."],
+["p","<code>ServerStorage</code> and <code>ServerScriptService</code> are server-only, so clients can’t see them. <code>ReplicatedStorage</code> is visible to both. Put anything secret on the server."],
+["c",`-- ModuleScript named "Util" in ReplicatedStorage
+local Util = {}
+function Util.round(n) return math.floor(n + 0.5) end
+return Util
+
+-- any other script
+local Util = require(game.ReplicatedStorage.Util)
+print(Util.round(2.6)) --> 3`],
+["e",["A <code>Script</code> runs on the server. A <code>LocalScript</code> runs only on one player’s device.", "The server’s storage is hidden from players, so keep secrets there. ReplicatedStorage is shared.", "A ModuleScript ends with <code>return</code> and gives back a table of things (here Util).", "<code>require(module)</code> runs it once and hands you that table.", "<code>Util.round(2.6)</code> adds 0.5 and rounds down, so it gives 3."]]]],
+["remotes","Structure","RemoteEvents","RemoteEvent RemoteFunction FireServer FireClient OnServerEvent client server communication network security exploit",[
+["p","Remotes let the client and server talk. Create a <code>RemoteEvent</code> in ReplicatedStorage, then:"],
+["c",`-- LocalScript (client)
+local ev = game.ReplicatedStorage:WaitForChild("BuyItem")
+ev:FireServer("Sword")
+
+-- Script (server)
+local ev = game.ReplicatedStorage.BuyItem
+ev.OnServerEvent:Connect(function(player, itemName)
+	if typeof(itemName) ~= "string" then return end -- validate!
+	-- check price, give item
+end)
+
+-- server -> client:  ev:FireClient(player, ...)   ev:FireAllClients(...)`],
+["t","<b>Never trust the client.</b> Exploiters can fire remotes with any arguments. Check types and values, and do the real work (money, damage, items) on the server."],
+["e",["A RemoteEvent is a messenger between one player’s client and the server.", "Client: <code>ev:FireServer(\"Sword\")</code> sends the word “Sword”.", "Server: <code>OnServerEvent</code> receives it. The first value is always the player who sent it (Roblox adds that for you), then whatever you sent.", "Check <code>typeof</code> first. A cheater can send anything, so never assume it’s valid.", "Server to client works the other way: <code>FireClient(player)</code> or <code>FireAllClients()</code>."]]]],
+["tween","Roblox API","Tweening","TweenService TweenInfo Create Play animate smooth move easing door fade",[
+["c",`local TweenService = game:GetService("TweenService")
+local info = TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+local tween = TweenService:Create(workspace.Door, info, {
+	Position = workspace.Door.Position + Vector3.new(0, 8, 0),
+	Transparency = 0.5,
+})
+tween:Play()
+tween.Completed:Wait()`],
+["e",["<code>TweenInfo.new(1, Quad, Out)</code> means: take 1 second, start fast and slow down at the end.", "<code>Create(object, info, goals)</code>: goals is a table of properties and where they should end up.", "<code>Door.Position + Vector3.new(0, 8, 0)</code> is the spot 8 studs higher.", "<code>:Play()</code> starts it.", "<code>Completed:Wait()</code> pauses the script until the tween has finished."]]]],
+["data","Roblox API","DataStores","DataStoreService GetAsync SetAsync UpdateAsync pcall save load persistent player data",[
+["p","DataStores save data between sessions. Calls can fail, so wrap them in <code>pcall</code>. Enable <code>Game Settings → Security → Studio Access to API Services</code> to test in Studio."],
+["c",`local DSS = game:GetService("DataStoreService")
+local store = DSS:GetDataStore("PlayerData")
+
+local function load(player)
+	local ok, data = pcall(store.GetAsync, store, tostring(player.UserId))
+	if ok then return data or {coins = 0} end
+	warn("Load failed:", data)
+end
+
+local function save(player, data)
+	local ok, err = pcall(store.SetAsync, store, tostring(player.UserId), data)
+	if not ok then warn("Save failed:", err) end
+end
+
+game.Players.PlayerRemoving:Connect(function(p) save(p, {coins = 10}) end)
+game:BindToClose(function() task.wait(2) end) -- let saves finish on shutdown`],
+["e",["<code>GetDataStore(\"PlayerData\")</code> opens a named save box.", "Each player’s save is stored under their UserId turned into text.", "<code>pcall(f, ...)</code> runs a function safely. It returns ok and a result, so a failed save won’t crash your game.", "Loading: if it worked, use the saved data. If it’s empty (new player) use a default like <code>{coins = 0}</code>.", "Saving happens when they leave. Replace <code>{coins = 10}</code> with the player’s real values. <code>BindToClose</code> gives saves time to finish on shutdown."]]]],
+["math","Roblox API","Math, Vector3 and CFrame","math random Vector3 CFrame Magnitude lerp clamp floor round position rotation distance angle",[
+["c",`print(math.floor(2.7), math.ceil(2.1), math.round(2.5)) --> 2 3 3
+print(math.clamp(150, 0, 100))   --> 100
+print(math.random(1, 6))         -- dice roll
+local rng = Random.new()         -- better: its own generator
+print(rng:NextInteger(1, 10), rng:NextNumber())
+
+local a, b = Vector3.new(0, 0, 0), Vector3.new(3, 4, 0)
+print((b - a).Magnitude)         --> 5  (distance)
+print(a:Lerp(b, 0.5))            --> 1.5, 2, 0
+
+local part = workspace.Part
+part.CFrame = CFrame.new(0, 10, 0) * CFrame.Angles(0, math.rad(90), 0)
+part.CFrame = CFrame.lookAt(part.Position, workspace.Target.Position)`],
+["t","<code>CFrame.Angles</code> takes <b>radians</b>. Wrap degrees in <code>math.rad()</code>."]]],
+["oop","Data","Metatables and OOP","metatable setmetatable __index class object self new method inheritance constructor module",[
+["p","A metatable tells a table what to do when a key is missing. Pointing <code>__index</code> at a class table gives every object the class’s methods. Call methods with <code>:</code> so <code>self</code> is passed in."],
+["c",`local Pet = {}
+Pet.__index = Pet
+
+function Pet.new(name: string)
+	local self = setmetatable({}, Pet)
+	self.Name = name
+	self.Hunger = 0
+	return self
+end
+
+function Pet:Feed(amount: number)
+	self.Hunger = math.max(0, self.Hunger - amount)
+end
+
+local dog = Pet.new("Rex")
+dog:Feed(10)
+
+-- inheritance
+local Cat = setmetatable({}, {__index = Pet})
+Cat.__index = Cat
+function Cat.new(name) local self = Pet.new(name); return setmetatable(self, Cat) end
+function Cat:Meow() print(self.Name .. " says meow") end`],
+["p","Other handy metamethods: <code>__add</code>, <code>__eq</code>, <code>__tostring</code>, <code>__call</code>, <code>__newindex</code>. Put a class in a ModuleScript and <code>return Pet</code> to reuse it anywhere."],
+["e",["<code>Pet = {}</code> is the blueprint. <code>Pet.__index = Pet</code> means “if an object is missing something, look in Pet”.", "<code>Pet.new</code> builds an object: <code>setmetatable({}, Pet)</code> makes an empty table linked to Pet, then fills in its fields and returns it.", "<code>Pet:Feed</code> uses a colon, so the hidden variable <code>self</code> is the object it was called on.", "<code>dog:Feed(10)</code> runs Feed with self = dog, so dog’s Hunger goes down.", "Cat reuses Pet’s code because when Cat is missing something it looks in Pet."]]]],
+["input","Client","Player input","UserInputService InputBegan keyboard mouse touch gamepad ContextActionService KeyCode key press click mobile",[
+["p","Input code belongs in a <b>LocalScript</b>. Ignore input when <code>gameProcessed</code> is true, which means the player is typing in chat or clicking a GUI."],
+["c",`local UIS = game:GetService("UserInputService")
+
+UIS.InputBegan:Connect(function(input, gameProcessed)
+	if gameProcessed then return end
+	if input.KeyCode == Enum.KeyCode.E then
+		print("E pressed")
+	elseif input.UserInputType == Enum.UserInputType.MouseButton1 then
+		print("Clicked")
+	end
+end)
+
+print(UIS:IsKeyDown(Enum.KeyCode.LeftShift)) -- held right now?
+print(UIS.TouchEnabled)                      -- on a phone/tablet?
+
+-- ContextActionService makes buttons for mobile automatically
+local CAS = game:GetService("ContextActionService")
+CAS:BindAction("Dash", function(_, state)
+	if state == Enum.UserInputState.Begin then print("Dash!") end
+end, true, Enum.KeyCode.Q)`],
+["e",["<code>UserInputService</code> listens to the keyboard, mouse and touch.", "<code>InputBegan</code> fires each time something is pressed. <code>input</code> says which key or button.", "<code>gameProcessed</code> is true when the player is typing in chat or clicking a menu, so the code ignores it.", "<code>IsKeyDown</code> checks right now whether a key is being held.", "<code>BindAction</code> also makes an on-screen button for mobile players."]]]],
+["gui","Client","GUI scripting","ScreenGui TextButton TextLabel Frame MouseButton1Click Visible UI PlayerGui StarterGui UDim2 interface menu",[
+["p","Build the layout in Studio, put a LocalScript inside the ScreenGui, and reach the pieces with <code>script.Parent</code>. UI position and size use <code>UDim2.new(scaleX, offsetX, scaleY, offsetY)</code>. Prefer scale (0 to 1) so it fits every screen."],
+["c",`local gui = script.Parent            -- the ScreenGui
+local frame = gui:WaitForChild("Shop")
+local button = gui:WaitForChild("OpenShop")
+
+button.MouseButton1Click:Connect(function()
+	frame.Visible = not frame.Visible
+end)
+
+local label = Instance.new("TextLabel")
+label.Size = UDim2.fromScale(0.3, 0.1)
+label.Position = UDim2.fromScale(0.35, 0.05)
+label.Text = "Coins: 0"
+label.Parent = frame
+
+-- update when a value changes
+local coins = game.Players.LocalPlayer:WaitForChild("leaderstats").Coins
+coins.Changed:Connect(function(v) label.Text = "Coins: " .. v end)`],
+["e",["<code>script.Parent</code> is the ScreenGui the LocalScript sits inside.", "<code>WaitForChild</code> finds the button and frame by name.", "<code>MouseButton1Click</code> fires on click or tap. <code>not frame.Visible</code> flips true to false and false to true.", "<code>UDim2.fromScale(0.3, 0.1)</code> means 30% of the parent’s width and 10% of its height, so it fits any screen.", "<code>coins.Changed</code> fires whenever the number changes, so the label always shows the new value."]]]],
+["attrs","Roblox API","Attributes and CollectionService tags","SetAttribute GetAttribute GetAttributeChangedSignal CollectionService AddTag GetTagged tag mutation config",[
+["p","Attributes are custom properties you can add to any Instance, from code or the Properties panel. Tags group many objects so one script can handle them all, like every coin or every door."],
+["c",`local part = workspace.Enemy
+part:SetAttribute("Damage", 25)
+print(part:GetAttribute("Damage"))
+part:GetAttributeChangedSignal("Damage"):Connect(function()
+	print("Damage is now", part:GetAttribute("Damage"))
+end)
+
+local CS = game:GetService("CollectionService")
+local function setup(coin) coin.Touched:Connect(function() coin:Destroy() end) end
+
+for _, coin in CS:GetTagged("Coin") do setup(coin) end -- existing
+CS:GetInstanceAddedSignal("Coin"):Connect(setup)       -- future ones`],
+["t","You can loop a table directly with <code>for k, v in tbl do</code>. It works like <code>pairs</code>/<code>ipairs</code>."]]],
+["raycast","Roblox API","Raycasting","Raycast RaycastParams RaycastResult FilterDescendantsInstances Instance Position Normal shoot gun line of sight",[
+["c",`local origin = workspace.Gun.Position
+local direction = workspace.Gun.CFrame.LookVector * 100
+
+local params = RaycastParams.new()
+params.FilterType = Enum.RaycastFilterType.Exclude
+params.FilterDescendantsInstances = {workspace.Gun}
+
+local result = workspace:Raycast(origin, direction, params)
+if result then
+	print("Hit", result.Instance.Name, "at", result.Position)
+	local hum = result.Instance.Parent:FindFirstChildOfClass("Humanoid")
+	if hum then hum:TakeDamage(20) end
+end`],
+["p","<code>result</code> is <code>nil</code> when nothing was hit. For guns, run the raycast on the <b>server</b> so exploiters can’t fake hits."],
+["e",["A ray is an invisible laser from a start point in a direction.", "<code>LookVector * 100</code> means “100 studs straight ahead”.", "RaycastParams lets you ignore the gun itself.", "<code>workspace:Raycast</code> gives you nil if nothing was hit.", "If something was hit, <code>result.Instance</code> is the part and <code>result.Position</code> is the spot. Then the code looks for a Humanoid and damages it."]]]],
+["prompt","Roblox API","ProximityPrompt and debounce","ProximityPrompt Triggered debounce cooldown spam touched os.clock tick interact",[
+["p","A <b>debounce</b> stops an event running many times at once. <code>Touched</code> fires constantly, so you almost always want one."],
+["c",`local prompt = workspace.Chest.ProximityPrompt
+local busy = false
+
+prompt.Triggered:Connect(function(player)
+	if busy then return end
+	busy = true
+	player.leaderstats.Coins.Value += 50
+	task.wait(5)           -- cooldown
+	busy = false
+end)
+
+-- per-player cooldown using a table
+local last = {}
+local function canUse(player, cd)
+	local now = os.clock()
+	if last[player] and now - last[player] < cd then return false end
+	last[player] = now
+	return true
+end
+game.Players.PlayerRemoving:Connect(function(p) last[p] = nil end) -- avoid leaks`],
+["e",["<code>busy</code> is a flag. false means ready.", "<code>Triggered</code> fires when a player holds the prompt key. If busy, it stops immediately.", "Otherwise it sets busy to true, gives 50 coins, waits 5 seconds, and sets busy back to false.", "The second part gives each player their own cooldown. The table <code>last</code> remembers when each player last used it.", "<code>os.clock()</code> is the current time. If less than <code>cd</code> seconds have passed, it returns false.", "Removing the player from the table when they leave stops it filling up forever."]]]],
+["anim","Roblox API","Humanoids and animations","Humanoid Animator LoadAnimation AnimationTrack Play Stop Health WalkSpeed JumpPower Died MoveTo animation id",[
+["c",`-- LocalScript in StarterCharacterScripts
+local char = script.Parent
+local hum = char:WaitForChild("Humanoid")
+local animator = hum:WaitForChild("Animator")
+
+local anim = Instance.new("Animation")
+anim.AnimationId = "rbxassetid://0000000000" -- your animation ID
+local track = animator:LoadAnimation(anim)
+track.Looped = false
+track:Play()
+track.Stopped:Wait()
+
+hum.Died:Connect(function() print("Ouch") end)
+hum.WalkSpeed = 24
+hum:TakeDamage(10)   -- respects ForceFields, unlike setting Health`],
+["p","You can only play animations you own, or that your group owns, in your own experience."]]],
+["tricks","Data","Varargs, iterators and table tricks","vararg select table.concat table.clone table.freeze table.unpack generic iterator closure memoize sort",[
+["c",`local function sum(...)
+	local total = 0
+	for _, n in {...} do total += n end
+	return total, select("#", ...)  -- value and arg count
+end
+print(sum(1, 2, 3)) --> 6 3
+
+print(table.concat({"a", "b", "c"}, ", ")) --> a, b, c
+local copy = table.clone({1, 2, 3})        -- shallow copy
+local CONFIG = table.freeze({MaxHP = 100}) -- read-only
+print(table.unpack({1, 2, 3}))             --> 1 2 3
+
+-- custom iterator
+local function countdown(n)
+	return function()
+		if n <= 0 then return nil end
+		n -= 1
+		return n + 1
+	end
+end
+for i in countdown(3) do print(i) end      --> 3 2 1
+
+-- sort a dictionary by value
+local scores = {A = 5, B = 9, C = 2}
+local keys = {}
+for k in scores do table.insert(keys, k) end
+table.sort(keys, function(x, y) return scores[x] > scores[y] end)`]]],
+["coroutines","Data","Coroutines","coroutine wrap create resume yield status async generator pause thread",[
+["c",`local co = coroutine.create(function(a)
+	print("start", a)
+	local b = coroutine.yield(a * 2)   -- pause, hand a value out
+	print("got", b)
+	return "done"
+end)
+print(coroutine.resume(co, 5))     --> true 10
+print(coroutine.resume(co, "x"))   --> true done
+print(coroutine.status(co))        --> dead
+
+local gen = coroutine.wrap(function()
+	for i = 1, 3 do coroutine.yield(i) end
+end)
+print(gen(), gen(), gen())         --> 1 2 3`],
+["t","Inside Roblox you usually want <code>task.spawn</code>. Coroutines are best for generators and custom schedulers."]]],
+["patterns","Data","String patterns and gsub","match gmatch gsub pattern regex find capture trim replace split digits letters",[
+["p","Luau patterns are simpler than regex. <code>%d</code> digit, <code>%a</code> letter, <code>%w</code> letter or digit, <code>%s</code> space, <code>.</code> any char, <code>+</code> one or more, <code>*</code> zero or more, <code>-</code> lazy, <code>^</code>/<code>$</code> start/end, <code>%</code> escapes a symbol."],
+["c",`print(("  hi  "):match("^%s*(.-)%s*$"))      --> hi (trim)
+print(("abc123"):match("%d+"))                --> 123
+print(("a1b22c333"):gsub("%d+", "#"))         --> a#b#c#  3
+for word in ("one two three"):gmatch("%a+") do print(word) end
+local key, val = ("name=Bob"):match("(%w+)=(%w+)")
+print(("a.b"):find(".", 1, true))             --> 2 2 (plain find)
+print(("%s has %d coins"):format("Bob", 5))
+print(("hello"):rep(2, "-"), ("abc"):reverse(), ("ABC"):byte(1))`]]],
+["time","Roblox API","Time, dates and timers","os time os.date os.clock tick GetServerTimeNow countdown timer daily reward date format seconds",[
+["c",`print(os.time())                              -- unix seconds
+print(os.date("!%Y-%m-%d %H:%M", os.time()))     -- UTC date text
+
+local t0 = os.clock()
+-- ...work...
+print("took", os.clock() - t0)                   -- precise timing
+
+local function fmt(s) return string.format("%02d:%02d", s // 60, s % 60) end
+for i = 90, 85, -1 do print(fmt(i)); task.wait(1) end  -- 01:30 ...
+
+-- daily reward
+local DAY = 86400
+if os.time() - (data.lastClaim or 0) >= DAY then
+	data.lastClaim = os.time()
+	-- give reward
+end
+print(workspace:GetServerTimeNow())              -- synced between server and clients`]]],
+["bindable","Structure","BindableEvents and custom signals","BindableEvent BindableFunction Fire Event signal custom event module communication between scripts",[
+["p","<b>BindableEvents</b> connect two scripts on the <b>same side</b> (server to server, client to client). For client to server use a RemoteEvent."],
+["c",`local be = Instance.new("BindableEvent")
+be.Event:Connect(function(msg) print("got", msg) end)
+be:Fire("hello")
+
+-- or write your own Signal in a ModuleScript
+local Signal = {}
+Signal.__index = Signal
+function Signal.new() return setmetatable({_h = {}}, Signal) end
+function Signal:Connect(fn)
+	table.insert(self._h, fn)
+	return {Disconnect = function()
+		local i = table.find(self._h, fn)
+		if i then table.remove(self._h, i) end
+	end}
+end
+function Signal:Fire(...) for _, fn in self._h do task.spawn(fn, ...) end end
+return Signal`]]],
+["tools","Roblox API","Tools and weapons","Tool Equipped Unequipped Activated Backpack Handle sword give item StarterPack hold weapon",[
+["c",`-- Script inside a Tool that has a part named Handle
+local tool = script.Parent
+local hitting = false
+
+tool.Equipped:Connect(function() print("equipped") end)
+tool.Unequipped:Connect(function() print("unequipped") end)
+
+tool.Activated:Connect(function()
+	if hitting then return end
+	hitting = true
+	local conn = tool.Handle.Touched:Connect(function(hit)
+		local hum = hit.Parent:FindFirstChildOfClass("Humanoid")
+		if hum and hit.Parent ~= tool.Parent then hum:TakeDamage(15) end
+	end)
+	task.wait(0.5)
+	conn:Disconnect()
+	hitting = false
+end)
+
+-- give a tool from ServerStorage
+local sword = game.ServerStorage.Sword:Clone()
+sword.Parent = player.Backpack`],
+["e",["The Script lives inside the Tool. The part named Handle is what the player holds.", "<code>Equipped</code> and <code>Unequipped</code> fire when they take it out or put it away. <code>Activated</code> fires when they click.", "<code>hitting</code> stops one swing from hurting someone many times.", "The Touched connection only lives for 0.5 seconds, then <code>Disconnect()</code> stops it.", "<code>hit.Parent ~= tool.Parent</code> ignores yourself, because while equipped the tool’s parent is your own character.", "The last lines clone a tool from ServerStorage into the player’s Backpack."]]]],
+["teams","Roblox API","Teams, spawns and respawning","Teams Team TeamColor SpawnLocation RespawnTime LoadCharacter kill brick checkpoint respawn RespawnLocation",[
+["c",`local Teams = game:GetService("Teams")
+local red = Instance.new("Team")
+red.Name = "Red"
+red.TeamColor = BrickColor.new("Bright red")
+red.AutoAssignable = false
+red.Parent = Teams
+player.Team = red
+
+game.Players.RespawnTime = 3
+player:LoadCharacter()                  -- respawn now
+
+-- checkpoint: SpawnLocation named Stage2
+workspace.Stage2.Touched:Connect(function(hit)
+	local plr = game.Players:GetPlayerFromCharacter(hit.Parent)
+	if plr then plr.RespawnLocation = workspace.Stage2 end
+end)`]]],
+["marketplace","Roblox API","Gamepasses and developer products","MarketplaceService UserOwnsGamePassAsync PromptGamePassPurchase ProcessReceipt PromptProductPurchase robux monetization purchase vip buy",[
+["c",`local MPS = game:GetService("MarketplaceService")
+local Players = game:GetService("Players")
+local PASS_ID = 123456   -- your gamepass ID
+
+local function hasPass(player)
+	local ok, owns = pcall(MPS.UserOwnsGamePassAsync, MPS, player.UserId, PASS_ID)
+	return ok and owns
+end
+Players.PlayerAdded:Connect(function(p)
+	if hasPass(p) then p:SetAttribute("VIP", true) end
+end)
+
+MPS.PromptGamePassPurchaseFinished:Connect(function(plr, id, bought)
+	if bought and id == PASS_ID then plr:SetAttribute("VIP", true) end
+end)
+
+-- developer products (repeatable). Set ProcessReceipt in ONE script only
+MPS.ProcessReceipt = function(info)
+	local plr = Players:GetPlayerByUserId(info.PlayerId)
+	if not plr then return Enum.ProductPurchaseDecision.NotProcessedYet end
+	if info.ProductId == 111 then plr.leaderstats.Coins.Value += 100 end
+	return Enum.ProductPurchaseDecision.PurchaseGranted
+end
+-- open the buy window: MPS:PromptGamePassPurchase(player, PASS_ID)`]]],
+["pathfinding","Roblox API","NPCs and pathfinding","PathfindingService CreatePath ComputeAsync GetWaypoints MoveTo MoveToFinished NPC enemy AI follow chase zombie mob",[
+["c",`local PFS = game:GetService("PathfindingService")
+local npc = script.Parent
+local hum, root = npc.Humanoid, npc.HumanoidRootPart
+
+local function nearestPlayer()
+	local best, bestDist = nil, math.huge
+	for _, plr in game.Players:GetPlayers() do
+		local r = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
+		if r then
+			local d = (r.Position - root.Position).Magnitude
+			if d < bestDist then best, bestDist = r, d end
+		end
+	end
+	return best
+end
+
+local function goTo(pos)
+	local path = PFS:CreatePath({AgentRadius = 2, AgentHeight = 5, AgentCanJump = true})
+	local ok = pcall(path.ComputeAsync, path, root.Position, pos)
+	if not ok or path.Status ~= Enum.PathStatus.Success then return end
+	for _, wp in path:GetWaypoints() do
+		if wp.Action == Enum.PathWaypointAction.Jump then hum.Jump = true end
+		hum:MoveTo(wp.Position)
+		hum.MoveToFinished:Wait()
+	end
+end
+
+while hum.Health > 0 do
+	local target = nearestPlayer()
+	if target then goTo(target.Position) end
+	task.wait(0.3)
+end`],
+["e",["nearestPlayer() loops through every player, measures the distance with <code>.Magnitude</code> and keeps the closest one.", "<code>CreatePath</code> describes the NPC’s size so the route fits through gaps.", "<code>ComputeAsync</code> works out a route. Only use it if Status is Success.", "<code>GetWaypoints</code> is a list of points. The NPC <code>MoveTo</code>s each one and waits until it arrives.", "The last loop repeats every 0.3 seconds: find the closest player, walk toward them."]]]],
+["physics","Roblox API","Physics and movement","LinearVelocity ApplyImpulse AssemblyLinearVelocity SetNetworkOwner Anchored CanCollide knockback launch jump pad force BodyVelocity bounce push",[
+["c",`local ball = workspace.Ball
+ball:ApplyImpulse(Vector3.new(0, 50, 0) * ball.AssemblyMass) -- instant push
+ball.AssemblyLinearVelocity = Vector3.new(0, 50, 0)           -- set speed directly
+ball:SetNetworkOwner(nil)    -- server controls physics (stops exploiters)
+
+-- jump pad
+workspace.Pad.Touched:Connect(function(hit)
+	local root = hit.Parent:FindFirstChild("HumanoidRootPart")
+	if root then root.AssemblyLinearVelocity = Vector3.new(0, 100, 0) end
+end)
+
+-- constant force with modern constraints (BodyVelocity is deprecated)
+local att = Instance.new("Attachment", ball)
+local lv = Instance.new("LinearVelocity")
+lv.Attachment0 = att
+lv.MaxForce = 1e5
+lv.VectorVelocity = Vector3.new(10, 0, 0)
+lv.Parent = ball`]]],
+["camera","Client","Camera scripting","CurrentCamera CameraType Scriptable CameraSubject FieldOfView cutscene WorldToViewportPoint RenderStepped fov view",[
+["c",`local cam = workspace.CurrentCamera
+local TweenService = game:GetService("TweenService")
+
+cam.CameraType = Enum.CameraType.Scriptable          -- take control
+cam.CFrame = workspace.CamStart.CFrame
+TweenService:Create(cam, TweenInfo.new(3), {CFrame = workspace.CamEnd.CFrame}):Play()
+task.wait(3)
+
+cam.CameraType = Enum.CameraType.Custom              -- give it back
+cam.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
+cam.FieldOfView = 90
+
+local pos, onScreen = cam:WorldToViewportPoint(workspace.Part.Position)
+print(onScreen, pos.X, pos.Y)                        -- 3D point to screen`]]],
+["runservice","Roblox API","RunService, Debris and cleanup","RunService IsServer IsClient IsStudio Heartbeat RenderStepped Stepped Debris AddItem cleanup Disconnect memory leak",[
+["p","<code>Stepped</code> runs before physics, <code>Heartbeat</code> after physics (server and client), <code>RenderStepped</code> before each frame (client only)."],
+["c",`local RunService = game:GetService("RunService")
+print(RunService:IsServer(), RunService:IsClient(), RunService:IsStudio())
+
+-- auto-destroy after a delay
+game:GetService("Debris"):AddItem(workspace.Explosion, 5)
+
+-- disconnect what you no longer need
+local conns = {}
+table.insert(conns, workspace.Part.Touched:Connect(print))
+table.insert(conns, RunService.Heartbeat:Connect(function(dt) end))
+local function cleanup() for _, c in conns do c:Disconnect() end table.clear(conns) end`]]],
+["teleport","Roblox API","TeleportService","TeleportService Teleport TeleportAsync PlaceId place game servers lobby TeleportData",[
+["c",`local TS = game:GetService("TeleportService")
+local PLACE_ID = 123456789
+
+local opts = Instance.new("TeleportOptions")
+opts:SetTeleportData({mode = "ranked"})
+local ok, err = pcall(TS.TeleportAsync, TS, PLACE_ID, {player}, opts)
+if not ok then warn("Teleport failed:", err) end
+
+-- in the destination place
+local data = player:GetJoinData().TeleportData
+print(data and data.mode)`]]],
+["typesdeep","Data","Advanced types","union generic export type any unknown cast typeof type guard optional literal strict table function",[
+["c",`--!strict
+type Mode = "easy" | "hard"                     -- literal union
+type Result<T> = { ok: boolean, value: T? }     -- generic type
+export type Item = { id: number, name: string, tags: {string} }
+
+local items: {[string]: Item} = {}              -- dictionary of Items
+local function pick<T>(list: {T}): T return list[math.random(#list)] end
+local n = pick({1, 2, 3})                       -- inferred as number
+
+local v: any = "hi"
+if typeof(v) == "string" then print(v:upper()) end  -- refinement
+local x = tonumber("5") :: number               -- cast with ::
+
+local function onDone(cb: (number) -> string) print(cb(1)) end
+local function try(mode: Mode) return mode == "easy" end`]]],
+["ex1","Examples","Example: kill brick, coin and checkpoint","example kill brick coin pickup checkpoint lava collect tutorial project beginner",[
+["p","Three tiny scripts that most obbies and collect games use."],
+["c",`-- Script in a kill brick
+script.Parent.Touched:Connect(function(hit)
+	local hum = hit.Parent:FindFirstChildOfClass("Humanoid")
+	if hum then hum.Health = 0 end
+end)
+
+-- Script in a coin (Anchored, CanCollide off)
+local coin, taken = script.Parent, false
+coin.Touched:Connect(function(hit)
+	local plr = game.Players:GetPlayerFromCharacter(hit.Parent)
+	if plr and not taken then
+		taken = true
+		plr.leaderstats.Coins.Value += 1
+		coin.Transparency = 1
+		task.wait(5)                 -- respawn the coin
+		coin.Transparency = 0
+		taken = false
+	end
+end)`]]],
+["ex2","Examples","Example: shop with a safe server check","example shop purchase buy remote validate server price inventory project coins",[
+["c",`-- Script in ServerScriptService
+local RS, SS = game.ReplicatedStorage, game.ServerStorage
+local PRICES = {Sword = 50, Shield = 30}
+
+RS.BuyItem.OnServerEvent:Connect(function(player, item)
+	if typeof(item) ~= "string" then return end
+	local price = PRICES[item]
+	if not price then return end                      -- unknown item
+	local coins = player.leaderstats.Coins
+	if coins.Value < price then return end            -- can't afford
+	if player.Backpack:FindFirstChild(item) then return end
+	coins.Value -= price
+	SS.Items[item]:Clone().Parent = player.Backpack
+end)
+
+-- LocalScript in the shop button
+-- script.Parent.MouseButton1Click:Connect(function()
+--     game.ReplicatedStorage.BuyItem:FireServer("Sword")
+-- end)`],
+["t","The client only <i>asks</i>. Prices and coins live on the server, so exploiters can’t change them."],
+["e",["Setup: a RemoteEvent named BuyItem in ReplicatedStorage, and a folder named Items in ServerStorage holding your Tools.", "The client only asks “can I buy Sword?”. It decides nothing.", "The server checks four things: it’s text, it’s a real item, the player can afford it, they don’t own it yet. Each <code>return</code> stops quietly if a check fails.", "If all pass, it takes the coins and puts a copy of the tool in their Backpack."]]]],
+["ex3","Examples","Example: round system","example round system game loop intermission timer lobby winners status project minigame",[
+["c",`-- Script in ServerScriptService. Needs a StringValue "Status" in ReplicatedStorage
+local Players = game:GetService("Players")
+local status = game.ReplicatedStorage.Status
+
+local function countdown(text, secs)
+	for i = secs, 1, -1 do
+		status.Value = text .. " " .. i
+		task.wait(1)
+	end
+end
+
+while true do
+	repeat
+		status.Value = "Waiting for players..."
+		task.wait(1)
+	until #Players:GetPlayers() >= 2
+
+	countdown("Intermission", 10)
+	local alive = {}
+	for _, plr in Players:GetPlayers() do
+		if plr.Character then
+			table.insert(alive, plr)
+			plr.Character:PivotTo(workspace.Arena.Spawn.CFrame + Vector3.new(0, 5, 0))
+		end
+	end
+	for t = 60, 1, -1 do
+		status.Value = "Round: " .. t .. "s"
+		task.wait(1)
+		-- end early when one player is left (check Humanoid.Health)
+	end
+	status.Value = "Round over!"
+	task.wait(3)
+end`],
+["e",["Setup: a StringValue named Status in ReplicatedStorage (a GUI can read it to show the text), and an Arena model with a part named Spawn.", "<code>while true do</code> loops forever. Each lap is one full game.", "<code>repeat ... until</code> waits until at least 2 players are in.", "countdown() changes the Status text each second.", "Players are moved into the arena with <code>PivotTo</code>, then the round timer counts down.", "It shows “Round over!”, waits 3 seconds and starts again."]]]],
+["cheat","Reference","Cheat sheet: standard libraries","library math string table os utf8 bit32 task list functions reference cheatsheet",[
+["c",`-- math    abs ceil floor round sqrt min max clamp random sign pi huge sin cos atan2 rad deg noise
+-- string  len sub upper lower rep reverse format find match gmatch gsub byte char split
+-- table   insert remove find sort concat unpack clone freeze clear create move pack
+-- os      time clock date
+-- task    spawn defer delay wait cancel
+-- utf8    len char codepoint codes   (emoji / non-English text)
+-- bit32   band bor bxor lshift rshift
+-- globals print warn error assert pcall xpcall select type typeof tostring tonumber
+--         ipairs pairs next unpack require setmetatable getmetatable rawget rawset
+-- operators  +  -  *  /  //(floor div)  %  ^  ..(concat)  #(length)
+--            ==  ~=  <  <=  >  >=  and  or  not    += -= *= /= ..= (compound)`]]],
+["compare","Reference","Luau for people coming from Python or JavaScript","python javascript js compare difference switch ternary 1-indexed null undefined arrow class import try catch coming from",[
+["c",`-- Python / JS          Luau
+-- x != y               x ~= y
+-- a && b, !c           a and b, not c
+-- cond ? a : b         if cond then a else b
+-- null / None          nil
+-- arr[0]               arr[1]        (1-indexed!)
+-- arr.length / len()   #arr
+-- "a" + "b"            "a" .. "b"
+-- x ** 2               x ^ 2
+-- for x of arr         for _, x in arr do
+-- import               require(module)
+-- try / catch          pcall(function() ... end)
+-- class                table + metatable
+-- (x) => x * 2         function(x) return x * 2 end
+-- // comment           -- comment
+
+-- no switch: use a table of functions
+local actions = {
+	jump = function() print("jump!") end,
+	run = function() print("run!") end,
+}
+local act = actions[input]
+if act then act() end`]]],
+["perf","Reference","Performance and good habits","performance lag optimize pool Debris WaitForChild cache table.create microprofiler memory leak best practice naming fps slow",[
+["c",`-- 1. Cache lookups you use a lot
+local Players = game:GetService("Players")          -- once, at the top
+
+-- 2. Don't poll when an event exists
+-- BAD:  while task.wait() do if part.Transparency == 1 then ... end end
+-- GOOD: part:GetPropertyChangedSignal("Transparency"):Connect(...)
+
+-- 3. Disconnect events and nil out references to dead players
+Players.PlayerRemoving:Connect(function(p) cache[p] = nil end)
+
+-- 4. Reuse objects instead of Clone/Destroy thousands of times (pooling)
+-- 5. Use Debris:AddItem, not task.wait(); part:Destroy() for effects
+-- 6. Do heavy work in small chunks:  if i % 100 == 0 then task.wait() end
+-- 7. Do not set Parent before properties (set Parent LAST)
+-- 8. Name things clearly, use --!strict, and put shared code in ModuleScripts`],
+["p","Press <code>Ctrl+F6</code> in Studio to open the MicroProfiler, and use the <b>Script Performance</b> window to find slow scripts."]]],
+["errors","Debugging","Errors and pcall","pcall error assert debug bug output nil attempt to index",[
+["p","The most common error is <b>attempt to index nil</b>. Something you expected to exist doesn’t, usually from a typo or a missing <code>WaitForChild</code>. Read the line number in Output and <code>print</code> the value before it."],
+["c",`local ok, result = pcall(function()
+	return workspace.Missing.Position   -- errors
+end)
+print(ok, result) --> false  (error message)
+
+assert(type(x) == "number", "x must be a number")`],
+["t","Place a breakpoint by clicking beside a line number in Studio, then press Play. The Script Analysis window also flags typos before you run."]]]
+];
+
+var LESSONS=[
+["l0","Beginner path","Lesson 0: Set up Roblox Studio","start setup install studio beginner begin new first output explorer script play",[
+["p","You need Roblox Studio (it’s free) and about two minutes. After this, every lesson works the same way."],
+["e",["Open Roblox Studio, click <b>New</b> and pick <b>Baseplate</b>.","Click the <b>View</b> tab and turn on <b>Explorer</b> and <b>Output</b>. Explorer lists everything in your game. Output is where your code shows messages.","In Explorer, hover over <b>ServerScriptService</b>, click the <b>+</b> and choose <b>Script</b>.","Double-click the new Script, delete what’s inside and paste the code below.","Press <b>Play</b> (the green triangle). Look at the Output window."]],
+["c",`print("Hello, world!")`],
+["o","Hello, world!"],
+["t","Every lesson works like this: paste the code into a Script and press Play. Press <b>Stop</b> before you change the code."]]],
+["l1","Beginner path","Lesson 1: Print, make the computer say something","print output message text beginner hello",[
+["p","<code>print</code> shows a message in the Output window. It’s the easiest way to check what your code is doing."],
+["c",`print("Hello!")
+print(5 + 5)
+print("I am", 12, "years old")`],
+["o","Hello!\n10\nI am 12 years old"],
+["t","<b>Try it:</b> change the words in the quotes to your own name and press Play again."]]],
+["l2","Beginner path","Lesson 2: Variables, give a value a name","variable local box store number beginner value",[
+["p","A variable is a name for a value, like a labelled box. <code>local</code> makes a new one and <code>=</code> puts a value in it."],
+["c",`local coins = 10
+print(coins)
+
+coins = coins + 5   -- put a new value in the same box
+print(coins)`],
+["o","10\n15"],
+["t","<b>Try it:</b> make a variable called <code>lives</code> set to 3, then take one away with <code>lives = lives - 1</code> and print it."]]],
+["l3","Beginner path","Lesson 3: Text (strings)","string text words join concat length upper beginner",[
+["p","Text is called a <b>string</b>. Put it in quotes. Use <code>..</code> to stick two pieces of text together."],
+["c",`local name = "Robloxian"
+print("Hello " .. name)
+print("Your name has " .. #name .. " letters")
+print(name:upper())`],
+["o","Hello Robloxian\nYour name has 9 letters\nROBLOXIAN"],
+["t","<code>#name</code> counts the letters and <code>:upper()</code> makes capitals. <b>Try it:</b> put your own name in."]]],
+["l4","Beginner path","Lesson 4: If, make decisions","if else condition compare equal decision beginner then",[
+["p","<code>if</code> lets your code choose. The lines between <code>then</code> and <code>end</code> only run when the condition is true."],
+["c",`local health = 30
+
+if health < 50 then
+	print("Careful, low health!")
+else
+	print("You are fine")
+end`],
+["o","Careful, low health!"],
+["p","Ways to compare: <code>&lt;</code> less than, <code>&gt;</code> more than, <code>==</code> equal to, <code>~=</code> not equal to. Join two checks with <code>and</code> or <code>or</code>."],
+["t","<b>Try it:</b> change health to 80 and see what prints."]]],
+["l5","Beginner path","Lesson 5: Loops, repeat things","loop for repeat count beginner many times",[
+["p","A loop runs the same code again and again so you don’t have to copy it."],
+["c",`for i = 1, 5 do
+	print("Number", i)
+end`],
+["o","Number 1\nNumber 2\nNumber 3\nNumber 4\nNumber 5"],
+["p","<code>i</code> counts from 1 to 5, and the code inside runs once for each number."],
+["t","<b>Try it:</b> change the 5 to 10. Careful: a loop that never ends, like <code>while true do</code> with no <code>task.wait()</code> inside, will freeze your game."]]],
+["l6","Beginner path","Lesson 6: Wait, pause your script","wait pause task countdown timer delay sleep beginner",[
+["c",`for i = 3, 1, -1 do
+	print(i)
+	task.wait(1)   -- pause for 1 second
+end
+print("Go!")`],
+["o","3, 2, 1, then Go! (one line each second)"],
+["p","<code>task.wait(1)</code> pauses the script for 1 second. The loop counts <b>down</b>: start at 3, stop at 1, and move by -1 each time."],
+["t","<b>Try it:</b> make it count down from 10."]]],
+["l7","Beginner path","Lesson 7: Functions, save code to reuse","function return reuse call argument beginner parameter",[
+["p","A function is a named chunk of code. Write it once, then <b>call</b> it as many times as you like."],
+["c",`local function sayHello(name)
+	print("Hello, " .. name .. "!")
+end
+
+sayHello("Sam")
+sayHello("Alex")
+
+local function double(n)
+	return n * 2      -- return sends an answer back
+end
+print(double(21))`],
+["o","Hello, Sam!\nHello, Alex!\n42"],
+["p","<code>name</code> is a gap that gets filled in every time you call the function. <code>return</code> hands a result back so you can use it."],
+["t","<b>Try it:</b> write a function <code>add(a, b)</code> that returns <code>a + b</code>."]]],
+["l8","Beginner path","Lesson 8: Lists (tables)","table list array insert items beginner pets index",[
+["p","A list (Luau calls it a <b>table</b>) holds many values in order. Items are numbered starting at <b>1</b>."],
+["c",`local pets = {"dog", "cat", "fish"}
+print(pets[1])     -- first item
+print(#pets)       -- how many items
+
+table.insert(pets, "bird")   -- add one at the end
+
+for _, pet in pets do
+	print(pet)
+end`],
+["o","dog\n3\ndog\ncat\nfish\nbird"],
+["t","The <code>_</code> means “I don’t need the position number”. <b>Try it:</b> add your own pet to the list."]]],
+["l9","Beginner path","Lesson 9: Change things in your game","part workspace property color transparency anchored size explorer beginner change",[
+["e",["In Explorer, hover over <b>Workspace</b>, click <b>+</b> and insert a <b>Part</b>.","Select it, press <b>F2</b> and rename it <b>MyPart</b>.","Paste the script below into a Script in ServerScriptService and press Play."]],
+["c",`local part = workspace.MyPart
+
+part.BrickColor = BrickColor.new("Bright red")
+part.Transparency = 0.5      -- 0 is solid, 1 is invisible
+part.Anchored = true         -- stops it falling
+part.Size = Vector3.new(8, 1, 8)`],
+["o","The part turns red, goes see-through, gets bigger and floats in place."],
+["t","Everything in Explorer has <b>properties</b> you change with <code>thing.Property = value</code>. Click MyPart and look in the Properties window to find more to try."]]],
+["l10","Beginner path","Lesson 10: Events, do something when something happens","event touched connect function beginner react",[
+["p","An <b>event</b> is something that happens in the game, like a part being touched. <code>:Connect</code> means “when this happens, run my function”."],
+["c",`local part = workspace.MyPart
+
+part.Touched:Connect(function(otherPart)
+	print(otherPart.Name .. " touched me!")
+	part.BrickColor = BrickColor.Random()
+end)`],
+["o","Walk into MyPart. The Output shows something like “LeftFoot touched me!” and the part changes colour."],
+["p","<code>otherPart</code> is whatever touched it. Your character is made of many parts, so the event fires several times."]]],
+["l11","Beginner path","Lesson 11: Make a kill brick","kill brick lava humanoid health die obby beginner",[
+["p","Insert a Part, then hover it, click <b>+</b> and add a <b>Script inside the part</b>. Paste this:"],
+["c",`local brick = script.Parent   -- the part this script sits in
+
+brick.Touched:Connect(function(otherPart)
+	local humanoid = otherPart.Parent:FindFirstChild("Humanoid")
+	if humanoid then
+		humanoid.Health = 0
+	end
+end)`],
+["o","Walk into the part and your character dies and respawns."],
+["p","<code>otherPart.Parent</code> is the character model. Every character has a <b>Humanoid</b> inside that holds its health. If we find one we set Health to 0. A normal part has no Humanoid, so nothing happens."]]],
+["l12","Beginner path","Lesson 12: A coin leaderboard","leaderstats leaderboard coins score playeradded folder intvalue beginner",[
+["p","Roblox shows a leaderboard when each player has a folder named exactly <code>leaderstats</code> with values inside. Put this in a Script in ServerScriptService."],
+["c",`game.Players.PlayerAdded:Connect(function(player)
+	local leaderstats = Instance.new("Folder")
+	leaderstats.Name = "leaderstats"
+	leaderstats.Parent = player
+
+	local coins = Instance.new("IntValue")
+	coins.Name = "Coins"
+	coins.Value = 0
+	coins.Parent = leaderstats
+end)`],
+["o","Press Play. A leaderboard showing Coins 0 appears at the top right."],
+["p","<code>PlayerAdded</code> is an event that fires when someone joins. <code>Instance.new</code> makes a new object, and <code>.Parent = ...</code> puts it inside another one."]]],
+["l13","Beginner path","Lesson 13: A coin you can collect","coin collect pickup touch score leaderstats destroy beginner",[
+["p","Make a Part named Coin and tick <b>Anchored</b>. Add this Script inside it. Keep Lesson 12’s script, because this one needs the leaderboard."],
+["c",`local coin = script.Parent
+
+coin.Touched:Connect(function(otherPart)
+	local player = game.Players:GetPlayerFromCharacter(otherPart.Parent)
+	if player then
+		player.leaderstats.Coins.Value += 1
+		coin:Destroy()
+	end
+end)`],
+["o","Touch the coin. It vanishes and your Coins goes up by 1."],
+["p","<code>GetPlayerFromCharacter</code> turns a character into its player, or nothing if it isn’t one. <code>+= 1</code> adds one. <code>Destroy()</code> removes the coin."]]],
+["l14","Beginner path","Lesson 14: What to learn next","next learn path roadmap what now advanced beginner",[
+["p","You now know the building blocks: print, variables, text, if, loops, functions, lists, properties, events and a bit of Roblox. Open the <b>Full guide</b> tab at the top when you’re ready. A good order:"],
+["p","<ol style=\"padding-left:22px;margin:0 0 14px\"><li>Server, client and modules</li><li>RemoteEvents (how a button talks to the server)</li><li>Tweening (smooth movement)</li><li>DataStores (saving progress)</li><li>Metatables and OOP</li></ol>"],
+["t","Stuck? Search for the word that describes your problem, like “save”, “button” or “shoot”."]]]
+];
+S=[S.shift()].concat(LESSONS,S);
+var beg=true;
+function isB(x){return x.s[0]=="readme"||/^l\d+$/.test(x.s[0])}
+var K=/(--\[\[[\s\S]*?\]\]|--[^\n]*)|("(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*'|`(?:\\.|[^`\\\n])*`)|\b(local|function|end|if|then|else|elseif|for|in|do|while|repeat|until|return|and|or|not|true|false|nil|break|continue|type)\b|\b(\d+\.?\d*)\b/g;
+function hl(code,el){
+  var out=0,i=0,m;K.lastIndex=0;
+  while((m=K.exec(code))){
+    if(m.index>i)el.appendChild(document.createTextNode(code.slice(i,m.index)));
+    var sp=document.createElement("span");
+    sp.className=m[1]?"c":m[2]?"s":m[3]?"k":"n";sp.textContent=m[0];el.appendChild(sp);i=K.lastIndex;
+  }
+  if(i<code.length)el.appendChild(document.createTextNode(code.slice(i)));
+}
+var secs=document.getElementById("secs"),nav=document.getElementById("nav"),els=[];
+S.forEach(function(s){
+  var sec=document.createElement("section");sec.id=s[0];
+  var h=document.createElement("h2");h.textContent=s[2];
+  var c=document.createElement("div");c.className="cat";c.textContent=s[1];
+  sec.append(h,c);var text=s[2]+" "+s[1]+" "+s[3];
+  s[4].forEach(function(b){
+    if(b[0]=="c"){
+      var w=document.createElement("div");w.className="cb";
+      var pre=document.createElement("pre"),code=document.createElement("code");
+      hl(b[1],code);pre.appendChild(code);
+      var btn=document.createElement("button");btn.className="cp";btn.textContent="Copy";btn.type="button";
+      btn.onclick=function(){
+        var done=function(){btn.textContent="Copied";setTimeout(function(){btn.textContent="Copy"},1200)};
+        try{navigator.clipboard.writeText(b[1]).then(done,function(){})}catch(e){}
+      };
+      w.append(pre,btn);sec.appendChild(w);text+=" "+b[1];
+    }else if(b[0]=="o"){var oh=document.createElement("div");oh.className="exh";oh.textContent="What you’ll see";var op=document.createElement("pre");op.textContent=b[1];sec.append(oh,op);text+=" "+b[1];
+    }else if(b[0]=="e"){var hd=document.createElement("div");hd.className="exh";hd.textContent="Step by step";var ol=document.createElement("ol");ol.className="ex";b[1].forEach(function(t){var li=document.createElement("li");li.innerHTML=t;ol.appendChild(li);text+=" "+li.textContent});sec.append(hd,ol);
+    }else{
+      var p=document.createElement("div");p.className=b[0]=="t"?"tip":"";
+      if(b[0]=="p")p.style.margin="0 0 14px";
+      p.innerHTML=b[1];sec.appendChild(p);text+=" "+p.textContent;
+    }
+  });
+  secs.appendChild(sec);els.push({s:s,el:sec,text:text.toLowerCase()});
+});
+function buildNav(list,flat){
+  nav.textContent="";var last="";
+  list.forEach(function(x){
+    if(!flat&&x.s[1]!==last){last=x.s[1];var h=document.createElement("h3");h.textContent=last;nav.appendChild(h);}
+    var a=document.createElement("a");a.href="#"+x.s[0];a.textContent=x.s[2];nav.appendChild(a);
+  });
+}
+var q=document.getElementById("q"),count=document.getElementById("count"),empty=document.getElementById("empty");
+var SYN={};
+function syn(keys,vals){keys.split(" ").forEach(function(k){SYN[k]=(SYN[k]||"")+" "+vals})}
+syn("save saving saved load loading persist persistent store storing database data progress backup","datastore getasync setasync pcall");
+syn("leaderboard leader coins money cash currency score points stats stat","leaderstats intvalue");
+syn("shop menu button ui interface screen hud frame label text popup","gui screengui textbutton");
+syn("click mouse keyboard key keybind press tap touch mobile phone controller gamepad","input userinputservice clickdetector");
+syn("shoot gun bullet laser ray aim hitscan sight weapon","raycast");
+syn("cooldown spam delay timer wait sleep pause","debounce task");
+syn("thread async parallel coroutine background","task spawn");
+syn("move slide animate smooth fade open close door lerp","tween");
+syn("class oop object inherit inheritance constructor self","metatable");
+syn("module reuse share library","modulescript require");
+syn("network communicate send exploit hack cheat security remote client server","remoteevent remotefunction");
+syn("event signal listener callback hook","connect touched");
+syn("list array dictionary dict collection","table");
+syn("text word split format concat","string");
+syn("random dice rng distance rotate rotation angle position vector","math cframe vector3");
+syn("die death dead hp health damage kill speed walkspeed jump character","humanoid");
+syn("animation emote","animator loadanimation");
+syn("error bug crash fix debug broken nil","pcall errors");
+syn("tag tags attribute config setting","collectionservice attribute");
+syn("type types strict","annotation");
+syn("variable var let const","local");
+syn("print output hello console","print warn");
+syn("condition compare","if elseif");
+syn("iterate each while for repeat","loop pairs ipairs");
+syn("method return arg param parameter","function");
+syn("join leave user","playeradded players");
+syn("folder part instance create clone destroy delete service workspace","instance getservice findfirstchild");
+syn("serverstorage replicated localscript","replicatedstorage serverscriptservice");
+syn("npc enemy ai chase follow zombie mob bot","pathfinding");
+syn("buy robux gamepass vip monetize purchase product premium","marketplace");
+syn("sword weapon item equip hold backpack","tool");
+syn("example examples project tutorial sample demo beginner","example");
+syn("team spawn respawn checkpoint","teams");
+syn("cutscene fov view","camera");
+syn("force push knockback launch velocity bounce impulse","physics");
+syn("regex replace trim find pattern","patterns");
+syn("clock timestamp daily date","time");
+syn("lobby place","teleport");
+syn("cheatsheet reference library functions","cheat");
+syn("python javascript js","compare");
+syn("lag fps optimize slow memory","performance");
+syn("generic union cast","advanced");
+function lev(a,b){var m=a.length,n=b.length,d=[],i,j;for(i=0;i<=m;i++)d[i]=[i];for(j=1;j<=n;j++)d[0][j]=j;for(i=1;i<=m;i++)for(j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]==b[j-1]?0:1));return d[m][n]}
+function sc(x,t){
+  var ti=x.s[2].toLowerCase(),tg=x.s[3].toLowerCase(),b=0,alts=[t];
+  if(t.length>4){var st=t.replace(/(ing|ed|es|s)$/,"");if(st.length>2&&st!==t)alts.push(st)}
+  alts.forEach(function(a){if(ti.indexOf(a)>-1)b=Math.max(b,10);else if(tg.indexOf(a)>-1)b=Math.max(b,6);else if(x.text.indexOf(a)>-1)b=Math.max(b,2)});
+  (SYN[t]||"").split(" ").filter(Boolean).forEach(function(a){if(ti.indexOf(a)>-1)b=Math.max(b,8);else if(tg.indexOf(a)>-1)b=Math.max(b,5)});
+  if(!b&&t.length>3){var mx=t.length>6?2:1;for(var i=0;i<x.w.length;i++){var w=x.w[i];if(Math.abs(w.length-t.length)<=mx&&lev(w,t)<=mx){b=1.5;break}}}
+  return b;
+}
+function run(){
+  var terms=q.value.toLowerCase().split(/\s+/).filter(Boolean),partial=false,ranked;
+  els.forEach(function(x){if(!x.w)x.w=x.text.match(/[a-z0-9]+/g)||[]});
+  if(!terms.length){ranked=els.filter(function(x){return beg?isB(x):!isB(x)})}
+  else{
+    var all=els.map(function(x){var s=terms.map(function(t){return sc(x,t)});return{x:x,s:s,t:s.reduce(function(a,b){return a+b},0),b:(beg===isB(x))?3:0}});
+    ranked=all.filter(function(r){return r.s.every(function(v){return v>0})});
+    if(!ranked.length){ranked=all.filter(function(r){return r.t>0});partial=ranked.length>0}
+    ranked.sort(function(a,b){return (b.t+b.b)-(a.t+a.b)});
+    ranked=ranked.map(function(r){return r.x});
+  }
+  els.forEach(function(x){x.el.style.display="none"});
+  ranked.forEach(function(x){x.el.style.display="";secs.appendChild(x.el)});
+  buildNav(ranked,terms.length>0);
+  empty.style.display=ranked.length?"none":"block";
+  count.textContent=terms.length?ranked.length+" of "+els.length+" sections"+(partial?" (partial matches)":""):ranked.length+" sections";
+  tb.classList.toggle("on",beg);ta.classList.toggle("on",!beg);tb.setAttribute("aria-selected",beg);ta.setAttribute("aria-selected",!beg);
+}
+var tb=document.getElementById("tb"),ta=document.getElementById("ta");
+tb.onclick=function(){beg=true;run();window.scrollTo(0,0)};
+ta.onclick=function(){beg=false;run();window.scrollTo(0,0)};
+q.addEventListener("input",run);
+document.addEventListener("keydown",function(e){
+  if(e.key==="/"&&document.activeElement!==q){e.preventDefault();q.focus();}
+  if(e.key==="Escape"&&document.activeElement===q){q.value="";run();q.blur();}
+});
+run();
+</script>
+</body>
+</html>
